@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.nianticlabs.lightship": "https://github.com/niantic-lightship/ardk-upm.git",
+    "com.unity.xr-content.xr-sim-environments": "file:../ContentPackages\\com.unity.xr-content.xr-sim-environments-1.0.0.tgz",
     "com.unity.xr.management": "4.5.0",
     "com.unity.xr.openxr": "1.11.0",
     "com.unity.modules.ai": "1.0.0",
