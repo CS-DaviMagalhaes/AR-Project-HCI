@@ -13,6 +13,7 @@ public class SpawnOnARV1 : MonoBehaviour
     [Range(0, 100)]
     [SerializeField] private int spawnLikelihood = 33;
 
+    private static bool modelSpawned = false;
     private GameObject selectedObject; // El objeto seleccionado para renderizar
     private GameObject spawnedObject;
     private MeshAnalyser meshAnalyser;
@@ -20,10 +21,15 @@ public class SpawnOnARV1 : MonoBehaviour
 
     private void Start()
     {
-        if (spawnLikelihood == 0) return;
+        // Si el modelo ya fue generado, desactiva este script inmediatamente
+        if (modelSpawned)
+        {
+            this.enabled = false;
+            return;
+        }
 
         // Obtener el nombre del modelo seleccionado desde PlayerPrefs
-        string modelName = PlayerPrefs.GetString("selectedModel", ""); // Default a un modelo específico si es necesario
+        string modelName = PlayerPrefs.GetString("selectedModel", ""); // Default a un modelo especÃ­fico si es necesario
 
         // Encontrar el modelo en la lista
         selectedObject = spawnObjects.Find(obj => obj.name == modelName);
@@ -35,49 +41,28 @@ public class SpawnOnARV1 : MonoBehaviour
         }
 
         meshAnalyser = GetComponent<MeshAnalyser>();
-        meshAnalyser.analysisDone += StartSpawning;
+        if (meshAnalyser != null)
+            meshAnalyser.analysisDone += StartSpawning;
     }
 
     private void OnDestroy()
     {
-        meshAnalyser.analysisDone -= StartSpawning;
+        if (meshAnalyser != null)
+            meshAnalyser.analysisDone -= StartSpawning;
     }
 
     private void StartSpawning()
     {
-        arMesh = GetComponent<MeshFilter>().sharedMesh;
+        if (modelSpawned) return;
 
-        int spawnLikely = Random.Range(0, 100 / spawnLikelihood);
-        if (spawnLikely != 0) return;
-
-        if (arMesh.vertexCount > minVertsForSpawn && meshAnalyser.IsGround)
+        if (meshAnalyser.IsGround && selectedObject != null)
         {
-            InstantiateObject(selectedObject);
+            Vector3 spawnPosition = Camera.main.transform.position + Camera.main.transform.forward * 0.8f;
+            spawnedObject = Instantiate(selectedObject, spawnPosition, Quaternion.identity);
+            spawnedObject.transform.localScale *= scaler;
+
+            modelSpawned = true; // Marcar como completado
+            Debug.Log("Model spawned in front of the camera at: " + spawnPosition);
         }
     }
-
-    private void InstantiateObject(GameObject obj)
-    {
-        if (spawnedObject != null) return; // Evita duplicados, instanciando solo una vez
-
-        spawnedObject = Instantiate(obj, GetRandomVector(), Quaternion.identity);
-        spawnedObject.transform.localScale *= scaler;
-    }
-
-    private Vector3 GetRandomVector()
-    {
-        Vector3 highestVert = Vector3.zero;
-        float highestY = Mathf.NegativeInfinity;
-
-        foreach (var vert in arMesh.vertices)
-        {
-            if (vert.y > highestY)
-            {
-                highestY = vert.y;
-                highestVert = transform.TransformPoint(vert);
-            }
-        }
-
-        return highestVert;
-    }
-}
+ }

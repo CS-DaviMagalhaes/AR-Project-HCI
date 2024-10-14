@@ -13,7 +13,7 @@ public class SceneController : MonoBehaviour
     
     public void LoadARScene(string modelName)
     {
-        // Guardar el nombre del modelo en una variable estática
+        // Guardar el nombre del modelo en una variable estï¿½tica
         selectedModel = modelName;
         PlayerPrefs.SetString("selectedModel", modelName);
         PlayerPrefs.Save();
@@ -23,5 +23,9 @@ public class SceneController : MonoBehaviour
     public void LoadMainMenu()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+    }
+    public void LoadGameplay()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Gameplay");
     }
 }
