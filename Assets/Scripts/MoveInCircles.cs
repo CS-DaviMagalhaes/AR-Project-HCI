@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveInCircles : MonoBehaviour
 {
     public Transform playerCamera;  // Reference to the camera (or player)
-    public float speed = 50;         // Speed of orbiting
+    private float speed = 8f;         // Speed of orbiting
     public Vector3 direction = Vector3.up;
 
     //simple function (speed does)
