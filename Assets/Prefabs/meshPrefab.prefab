@@ -115,8 +115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnObjects:
   - {fileID: 1180969222675100, guid: d3a94b583c03f734288546bf3abbbf7c, type: 3}
-  - {fileID: 1766233099539046, guid: 4c19e7fac9429a743b3a44dab80d5829, type: 3}
-  - {fileID: 1190028872660160, guid: 84e38d7f6eafbd44c94f15c42908c48c, type: 3}
   minVertsForSpawn: 30
-  scaler: 0.4
+  scaler: 0.25
   spawnLikelihood: 23
