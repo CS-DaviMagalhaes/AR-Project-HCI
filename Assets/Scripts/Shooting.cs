@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shooting : MonoBehaviour 
+public class Shooting : MonoBehaviour
 {
     [SerializeField] private GameObject bullet;
     [SerializeField] private float force = 850.0f;
-    [SerializeField] private Transform pointer;
-    [SerializeField] private float lifetime = 2.0f; //eliminar la bala despues de algunos segundos
+    [SerializeField] private float lifetime = 2.0f; //eliminar la bala después de algunos segundos
 
     private Camera aRcamera;
     private BallManager ballManager; // Referencia al BallManager
@@ -15,7 +14,7 @@ public class Shooting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        aRcamera = GameManager.Instance.ARCamera; 
+        aRcamera = GameManager.Instance.ARCamera;
         ballManager = FindObjectOfType<BallManager>(); // Encuentra el BallManager en la escena
     }
 
@@ -30,24 +29,25 @@ public class Shooting : MonoBehaviour
 
                 Ray ray = aRcamera.ScreenPointToRay(inputPosition);
 
+                // Instanciar la bola en la posición del toque
+                GameObject ball = Instantiate(bullet, ray.origin, Quaternion.identity, transform);
+
                 Vector3 direction;
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    direction = hit.point - pointer.position;
+                    direction = hit.point - ray.origin; // Calcula la dirección desde el punto de toque
                 }
                 else
                 {
-                    direction = pointer.forward;
+                    direction = ray.direction; // Si no hay impacto, usa la dirección del rayo
                 }
 
-                GameObject ball = Instantiate(bullet, pointer.position, Quaternion.identity, transform);
                 ball.GetComponent<Rigidbody>().AddForce(direction.normalized * force);
-                ballManager.UseBall(); //gasta una bala
+                ballManager.UseBall(); // Gasta una bala
 
-                //eliminar la bala despues de algunos segundos
+                // Eliminar la bala después de algunos segundos
                 Destroy(ball, lifetime);
             }
         }
     }
-    
 }
