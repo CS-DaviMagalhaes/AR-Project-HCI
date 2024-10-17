@@ -14,6 +14,8 @@ public class SceneController : MonoBehaviour
     public void LoadARScene(string modelName)
     {
         // Guardar el nombre del modelo en una variable est�tica
+        PlayerPrefs.SetInt("modelSpawned", 0); // 1 para indicar que ya fue generado
+        PlayerPrefs.Save();
         selectedModel = modelName;
         PlayerPrefs.SetString("selectedModel", modelName);
         PlayerPrefs.Save();

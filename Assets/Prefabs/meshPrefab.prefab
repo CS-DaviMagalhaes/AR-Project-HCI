@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundThreshold: 0.44
   avgNormal: 0
-  minVerts: 10
+  minVerts: 15
   isGround: 0
 --- !u!114 &2231375383707927341
 MonoBehaviour:
@@ -115,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnObjects:
   - {fileID: 1180969222675100, guid: d3a94b583c03f734288546bf3abbbf7c, type: 3}
+  - {fileID: 100006, guid: ebfa405660e25c549bb7039f0b44f8ff, type: 3}
   minVertsForSpawn: 30
   scaler: 0.25
-  spawnLikelihood: 23
+  spawnLikelihood: 30

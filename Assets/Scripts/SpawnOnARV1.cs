@@ -22,17 +22,25 @@ public class SpawnOnARV1 : MonoBehaviour
     private void Start()
     {
         // Si el modelo ya fue generado, desactiva este script inmediatamente
-        if (modelSpawned)
+        if (PlayerPrefs.GetInt("modelSpawned", 0) == 1)
         {
             this.enabled = false;
+            Debug.Log("Modelo ya generado, desactivando script.");
             return;
         }
+
+
 
         // Obtener el nombre del modelo seleccionado desde PlayerPrefs
         string modelName = PlayerPrefs.GetString("selectedModel", ""); // Default a un modelo específico si es necesario
 
         // Encontrar el modelo en la lista
         selectedObject = spawnObjects.Find(obj => obj.name == modelName);
+
+        if (modelName == "Helicopter")
+        {
+            scaler = scaler / 4;
+        }
 
         if (selectedObject == null)
         {
@@ -53,7 +61,7 @@ public class SpawnOnARV1 : MonoBehaviour
 
     private void StartSpawning()
     {
-        if (modelSpawned) return;
+        if (PlayerPrefs.GetInt("modelSpawned", 0) == 1) return;
 
         if (meshAnalyser.IsGround && selectedObject != null)
         {
@@ -62,6 +70,9 @@ public class SpawnOnARV1 : MonoBehaviour
             spawnedObject.transform.localScale *= scaler;
 
             modelSpawned = true; // Marcar como completado
+            PlayerPrefs.SetInt("modelSpawned", 1); // 1 para indicar que ya fue generado
+            PlayerPrefs.Save();
+
             Debug.Log("Model spawned in front of the camera at: " + spawnPosition);
         }
     }
